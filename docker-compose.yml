@@ -1,0 +1,86 @@
+# 一期部署（docs/architecture.md Step 6）：Docker Compose，每服务一容器。
+# 启动：cp .env.example .env && docker compose up -d --build
+# 首次启动后执行数据库迁移：docker compose run --rm api pnpm --filter @agentic-news/storage db:migrate
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: agentic
+      POSTGRES_PASSWORD: agentic
+      POSTGRES_DB: agentic_news
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agentic -d agentic_news"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://agentic:agentic@postgres:5432/agentic_news
+      REDIS_URL: redis://redis:6379
+      API_PORT: "3001"
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  collector:
+    build:
+      context: .
+      dockerfile: workers/collector/Dockerfile
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://agentic:agentic@postgres:5432/agentic_news
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  cleaner:
+    build:
+      context: .
+      dockerfile: workers/cleaner/Dockerfile
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://agentic:agentic@postgres:5432/agentic_news
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:
+  redisdata:

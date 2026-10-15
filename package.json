@@ -1,0 +1,1 @@
+{"devDependencies":{"turbo":"^2.3.3","typescript":"^5.7.2"},"name":"agentic-news","packageManager":"pnpm@9.15.9","private":true,"scripts":{"build":"turbo build","db:generate":"pnpm --filter @agentic-news/storage db:generate","db:migrate":"pnpm --filter @agentic-news/storage db:migrate","dev":"turbo dev","test":"turbo test"},"version":"0.1.0"}
