@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的资讯台 · 产品原型（多风格版）</title>
+<style id="theme-editorial" media="not all">
+  :root{--ink:#16130e;--muted:#7a746a;--line:#e7e2d9;--paper:#faf9f6;--accent:#9a7b4f;--accent-soft:#f3eee4}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--accent)}
+  .topbar{background:var(--paper);border-bottom:1px solid var(--ink);position:sticky;top:0;z-index:10}
+  .topbar-in{max-width:1020px;margin:0 auto;padding:18px 24px 14px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .logo{font-family:Georgia,"Songti SC","STSong","Noto Serif SC",serif;font-size:24px;font-weight:700;letter-spacing:.06em}
+  .logo span{color:var(--accent)}
+  .tag{font-size:11px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+  .tenant{margin-left:auto;display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted)}
+  select{padding:5px 8px;border:1px solid var(--line);border-radius:2px;font-size:13px;background:#fff;color:var(--ink)}
+  nav{background:var(--paper);border-bottom:1px solid var(--line)}
+  nav .in{max-width:1020px;margin:0 auto;padding:0 24px;display:flex;gap:26px;overflow-x:auto}
+  nav button{border:0;background:none;padding:11px 0;font-size:13px;letter-spacing:.08em;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap}
+  nav button.on{color:var(--ink);border-color:var(--ink);font-weight:600}
+  main{max-width:1020px;margin:0 auto;padding:28px 24px 64px}
+  .page{display:none}
+  .page.on{display:block}
+  .note{background:var(--accent-soft);border-left:3px solid var(--accent);padding:12px 16px;font-size:13.5px;color:#57503f;margin-bottom:22px}
+  .note b{color:var(--ink)}
+  h1{font-family:Georgia,"Songti SC","STSong","Noto Serif SC",serif;font-size:27px;font-weight:600;letter-spacing:.02em;margin-bottom:6px}
+  h2{font-family:Georgia,"Songti SC","STSong","Noto Serif SC",serif;font-size:19px;font-weight:600;margin:28px 0 12px}
+  .sub{color:var(--muted);font-size:14.5px;margin-bottom:20px}
+  .chips{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:14px}
+  .chip{padding:2px 0;border:0;border-bottom:2px solid transparent;background:none;font-size:13.5px;letter-spacing:.05em;cursor:pointer;color:var(--muted)}
+  .chip.on{background:none;color:var(--ink);border-color:var(--accent);font-weight:600}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:4px;padding:20px}
+  .card h3{font-family:Georgia,"Songti SC","STSong","Noto Serif SC",serif;font-size:17px;margin:6px 0 8px;line-height:1.45}
+  .card p{font-size:14px;color:#55504a}
+  .meta{font-size:11.5px;letter-spacing:.08em;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+  .kind{font-size:11px;font-weight:600;letter-spacing:.12em;padding:0;color:var(--accent);background:none}
+  .kind.blog{background:none;color:var(--accent)}
+  .kind.social{background:none;color:var(--accent)}
+  .why{margin-top:12px;font-size:13px;background:var(--accent-soft);padding:10px 12px;color:#57503f}
+  .btn{display:inline-block;background:var(--ink);color:#fff;padding:9px 20px;border-radius:2px;font-size:13.5px;letter-spacing:.06em;border:1px solid var(--ink);cursor:pointer}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .list{background:#fff;border-top:2px solid var(--ink);border-bottom:1px solid var(--line)}
+  .item{padding:15px 4px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:flex-start}
+  .item:last-child{border-bottom:0}
+  .item .grow{flex:1}
+  .item h3{font-family:Georgia,"Songti SC","STSong","Noto Serif SC",serif;font-size:16px;font-weight:600;margin-bottom:2px}
+  .item p{font-size:13.5px;color:var(--muted)}
+  .switch{font-size:13px;color:var(--accent);white-space:nowrap}
+  input[type=text]{flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--line);border-radius:2px;font-size:15px;background:#fff}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+  .step{background:#fff;padding:18px 14px;text-align:center}
+  .step .n{font-family:Georgia,serif;font-style:italic;font-size:22px;color:var(--accent);margin-bottom:6px}
+  .step h3{font-size:14.5px;margin-bottom:4px}
+  .step p{font-size:13px;color:var(--muted)}
+  .map{background:#fff;border:1px solid var(--line);border-radius:4px;padding:22px;font-size:15px}
+  .map ul{margin-left:20px;color:#44403a}
+  .detail{background:#fff;border:1px solid var(--line);border-radius:4px;padding:30px}
+  .detail h1{font-size:25px;line-height:1.4}
+  .points{background:var(--accent-soft);padding:16px 20px;margin:16px 0}
+  .points li{margin-left:18px;margin-bottom:6px}
+  footer{color:#a39c90;font-size:12px;letter-spacing:.1em;text-align:center;padding:26px}
+  .persona{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .persona button{background:transparent;border:1px solid #c9c2b4;border-radius:99px;padding:6px 16px;cursor:pointer;font-size:13.5px;color:var(--muted)}
+  .persona button.on{border-color:var(--ink);background:var(--ink);color:#fff}
+  .feedlist{border-top:2px solid var(--ink);background:transparent;counter-reset:row}
+  .frow::before{counter-increment:row;content:counter(row,decimal-leading-zero);font-family:Georgia,serif;font-style:italic;font-size:12.5px;color:var(--accent);min-width:24px}
+  .frow{display:flex;gap:14px;align-items:baseline;padding:10px 2px;border-bottom:1px solid var(--line);cursor:pointer}
+  .frow:last-child{border-bottom:0}
+  .frow:hover{background:#fff}
+  .frow .src{flex:none;width:172px;max-width:36vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;font-weight:600;letter-spacing:.02em}
+  .frow .src em{font-style:normal;font-weight:400;color:#a39c90;margin-left:7px;font-size:12px}
+  .frow .ft{flex:1;font-family:Georgia,"Songti SC","STSong","Noto Serif SC",serif;font-size:15.5px;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .frow .fs{flex:none;font-size:12px;letter-spacing:.04em;color:#a39c90;white-space:nowrap}
+  .count{font-size:13px;color:var(--muted);font-weight:400}
+</style>
+<style id="theme-tech" media="all">
+  :root{--bg:#050810;--panel:rgba(148,178,255,.06);--panel2:rgba(148,178,255,.1);--ink:#e8edf7;--muted:#8b96ad;--line:rgba(148,178,255,.16);--cyan:#22d3ee;--violet:#818cf8;--grad:linear-gradient(90deg,#22d3ee,#818cf8)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);background-image:radial-gradient(ellipse 800px 400px at 15% -5%,rgba(34,211,238,.14),transparent),radial-gradient(ellipse 700px 380px at 90% 0%,rgba(129,140,248,.13),transparent),linear-gradient(rgba(148,178,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(148,178,255,.045) 1px,transparent 1px);background-size:auto,auto,44px 44px,44px 44px;color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:var(--cyan);text-decoration:none}
+  .topbar{background:rgba(5,8,16,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+  .topbar-in{max-width:1060px;margin:0 auto;padding:15px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .logo{font-size:21px;font-weight:700;letter-spacing:.04em}
+  .logo span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .tag{font-size:11px;letter-spacing:.16em;color:var(--cyan);border:1px solid rgba(34,211,238,.35);padding:3px 9px;border-radius:99px;background:rgba(34,211,238,.06)}
+  .tenant{margin-left:auto;display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted)}
+  select{padding:6px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;background:#0b1120;color:var(--ink)}
+  nav{background:rgba(5,8,16,.6);border-bottom:1px solid var(--line)}
+  nav .in{max-width:1060px;margin:0 auto;padding:0 22px;display:flex;gap:6px;overflow-x:auto}
+  nav button{border:0;background:none;padding:12px 13px;font-size:14px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap}
+  nav button.on{color:#fff;border-color:var(--cyan);font-weight:600}
+  main{max-width:1060px;margin:0 auto;padding:26px 22px 64px}
+  .page{display:none}
+  .page.on{display:block}
+  .note{background:rgba(34,211,238,.07);border:1px solid rgba(34,211,238,.22);border-radius:12px;padding:12px 16px;font-size:13.5px;color:#b9c6dd;margin-bottom:20px}
+  .note b{color:var(--cyan)}
+  h1{font-size:26px;font-weight:700;letter-spacing:.01em;margin-bottom:6px}
+  h2{font-size:18px;font-weight:600;margin:26px 0 12px;color:#fff}
+  .sub{color:var(--muted);font-size:14.5px;margin-bottom:20px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .chip{padding:5px 14px;border-radius:99px;border:1px solid var(--line);background:var(--panel);font-size:13.5px;cursor:pointer;color:var(--muted)}
+  .chip.on{background:var(--grad);color:#04121a;border-color:transparent;font-weight:700}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:19px;backdrop-filter:blur(8px)}
+  .card h3{font-size:16.5px;margin:6px 0 8px;line-height:1.45;color:#fff}
+  .card p{font-size:14px;color:var(--muted)}
+  .meta{font-size:12px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .kind{font-size:12px;font-weight:600;padding:0;color:var(--cyan);background:none;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .kind.blog{background:none;color:var(--cyan)}
+  .kind.social{background:none;color:var(--cyan)}
+  .why{margin-top:12px;font-size:13px;background:var(--panel2);border-radius:10px;padding:9px 12px;color:#b9c6dd}
+  .btn{display:inline-block;background:var(--grad);color:#04121a;font-weight:700;padding:9px 19px;border-radius:10px;font-size:14px;border:0;cursor:pointer}
+  .btn.ghost{background:transparent;color:var(--cyan);border:1px solid rgba(34,211,238,.45)}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .list{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;backdrop-filter:blur(8px)}
+  .item{padding:15px 18px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:flex-start}
+  .item:last-child{border-bottom:0}
+  .item .grow{flex:1}
+  .item h3{font-size:15.5px;margin-bottom:2px;color:#fff}
+  .item p{font-size:13.5px;color:var(--muted)}
+  .switch{font-size:13px;color:var(--cyan);white-space:nowrap}
+  input[type=text]{flex:1;min-width:220px;padding:10px 13px;border:1px solid var(--line);border-radius:10px;font-size:15px;background:#0b1120;color:var(--ink)}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:17px 14px;text-align:center;backdrop-filter:blur(8px)}
+  .step .n{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:20px;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:6px}
+  .step h3{font-size:14.5px;margin-bottom:4px;color:#fff}
+  .step p{font-size:13px;color:var(--muted)}
+  .map{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:21px;font-size:15px}
+  .map ul{margin-left:20px;color:#c3cbdd}
+  .detail{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:28px;backdrop-filter:blur(8px)}
+  .detail h1{font-size:24px;line-height:1.4;color:#fff}
+  .points{background:var(--panel2);border-radius:12px;padding:16px 20px;margin:16px 0}
+  .points li{margin-left:18px;margin-bottom:6px}
+  footer{color:#5d6a84;font-size:12px;letter-spacing:.08em;text-align:center;padding:26px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .persona{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .persona button{background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:6px 16px;cursor:pointer;font-size:13.5px;color:var(--muted)}
+  .persona button.on{border-color:transparent;background:var(--grad);color:#04121a;font-weight:700}
+  .feedlist{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;backdrop-filter:blur(8px);counter-reset:row}
+  .frow{display:flex;gap:13px;align-items:baseline;padding:10px 16px;border-bottom:1px solid var(--line);cursor:pointer}
+  .frow:last-child{border-bottom:0}
+  .frow:hover{background:rgba(34,211,238,.06)}
+  .frow::before{counter-increment:row;content:counter(row,decimal-leading-zero);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--cyan);min-width:24px}
+  .frow .src{flex:none;width:172px;max-width:36vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;font-weight:600;color:#dbe6ff}
+  .frow .src em{font-style:normal;font-weight:400;color:var(--muted);margin-left:7px;font-size:12px}
+  .frow .ft{flex:1;font-size:15px;line-height:1.45;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .frow .fs{flex:none;font-size:12px;color:#5d6a84;white-space:nowrap;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .count{font-size:13px;color:var(--muted);font-weight:400}
+</style>
+<style id="theme-geek" media="not all">
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"PingFang SC","Microsoft YaHei",monospace;background:#050505;background-image:repeating-linear-gradient(0deg,rgba(51,255,102,.028) 0 1px,transparent 1px 3px);color:#c8f5d2;line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:#33ff66;text-decoration:none}
+  ::selection{background:#33ff66;color:#000}
+  .topbar{background:rgba(0,0,0,.92);border-bottom:1px solid #33ff66;position:sticky;top:0;z-index:10}
+  .topbar-in{max-width:1060px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .logo{font-size:20px;font-weight:700;letter-spacing:.06em;color:#eaffee;text-shadow:0 0 8px rgba(51,255,102,.45)}
+  .logo span{color:#33ff66}
+  .tag{font-size:11px;letter-spacing:.14em;color:#33ff66;border:1px dashed #2a7d3f;padding:3px 9px}
+  .tenant{margin-left:auto;display:flex;gap:8px;align-items:center;font-size:13px;color:#6f9a78}
+  select{padding:6px 9px;border:1px solid #2a7d3f;border-radius:0;font-size:13px;background:#000;color:#c8f5d2}
+  nav{background:#000;border-bottom:1px solid #1d4026}
+  nav .in{max-width:1060px;margin:0 auto;padding:0 22px;display:flex;gap:4px;overflow-x:auto}
+  nav button{border:0;background:none;padding:11px 12px;font-size:13.5px;cursor:pointer;color:#6f9a78;border-bottom:2px solid transparent;white-space:nowrap;font-family:inherit}
+  nav button.on{color:#33ff66;border-color:#33ff66;font-weight:700}
+  nav button:hover{color:#33ff66}
+  main{max-width:1060px;margin:0 auto;padding:26px 22px 64px}
+  .page{display:none}
+  .page.on{display:block}
+  .note{background:rgba(51,255,102,.05);border:1px solid #1d4026;border-left:3px solid #33ff66;padding:12px 16px;font-size:13.5px;color:#9fc7a8;margin-bottom:20px}
+  .note b{color:#33ff66}
+  .note b::before{content:"> "}
+  h1{font-size:25px;font-weight:700;margin-bottom:6px;color:#eaffee}
+  h1::before{content:"$ ";color:#33ff66}
+  h2{font-size:17px;font-weight:700;margin:26px 0 12px;color:#eaffee}
+  h2::before{content:"# ";color:#33ff66}
+  .sub{color:#6f9a78;font-size:14px;margin-bottom:20px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .chip{padding:4px 12px;border:1px solid #2a7d3f;background:#000;font-size:13px;cursor:pointer;color:#9fc7a8}
+  .chip.on{background:#33ff66;color:#000;border-color:#33ff66;font-weight:700}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+  .card{background:#0a0f0a;border:1px solid #1d4026;border-radius:0;padding:19px}
+  .card h3{font-size:16px;margin:6px 0 8px;line-height:1.45;color:#eaffee}
+  .card p{font-size:13.5px;color:#9fc7a8}
+  .meta{font-size:12px;color:#6f9a78;display:flex;gap:10px;flex-wrap:wrap}
+  .kind{font-size:12px;font-weight:700;padding:0;color:#33ff66;background:none}
+  .kind.blog{background:none;color:#33ff66}
+  .kind.social{background:none;color:#33ff66}
+  .why{margin-top:12px;font-size:13px;background:rgba(51,255,102,.05);border:1px dashed #1d4026;padding:9px 12px;color:#9fc7a8}
+  .btn{display:inline-block;background:#33ff66;color:#000;font-weight:700;padding:9px 19px;border-radius:0;font-size:14px;border:1px solid #33ff66;cursor:pointer;font-family:inherit}
+  .btn.ghost{background:transparent;color:#33ff66;border:1px solid #2a7d3f}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .list{background:#0a0f0a;border:1px solid #1d4026;overflow:hidden}
+  .item{padding:15px 18px;border-bottom:1px solid #1d4026;display:flex;gap:14px;align-items:flex-start}
+  .item:last-child{border-bottom:0}
+  .item .grow{flex:1}
+  .item h3{font-size:15.5px;margin-bottom:2px;color:#eaffee}
+  .item p{font-size:13px;color:#6f9a78}
+  .switch{font-size:13px;color:#33ff66;white-space:nowrap}
+  input[type=text]{flex:1;min-width:220px;padding:10px 13px;border:1px solid #2a7d3f;border-radius:0;font-size:14px;background:#000;color:#c8f5d2;font-family:inherit}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+  .step{background:#0a0f0a;border:1px solid #1d4026;padding:17px 14px;text-align:center}
+  .step .n{font-size:20px;font-weight:700;color:#33ff66;margin-bottom:6px;text-shadow:0 0 8px rgba(51,255,102,.5)}
+  .step h3{font-size:14px;margin-bottom:4px;color:#eaffee}
+  .step p{font-size:12.5px;color:#6f9a78}
+  .map{background:#0a0f0a;border:1px solid #1d4026;padding:21px;font-size:14.5px}
+  .map ul{margin-left:20px;color:#9fc7a8}
+  .detail{background:#0a0f0a;border:1px solid #33ff66;padding:28px}
+  .detail h1{font-size:23px;line-height:1.4}
+  .detail h1::before{content:""}
+  .points{background:rgba(51,255,102,.05);border:1px dashed #2a7d3f;padding:16px 20px;margin:16px 0}
+  .points li{margin-left:18px;margin-bottom:6px}
+  footer{color:#476b4f;font-size:12px;letter-spacing:.08em;text-align:center;padding:26px}
+  .persona{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .persona button{background:#000;border:1px solid #2a7d3f;border-radius:0;padding:6px 15px;cursor:pointer;font-size:13px;color:#9fc7a8;font-family:inherit}
+  .persona button.on{border-color:#33ff66;background:#33ff66;color:#000;font-weight:700}
+  .feedlist{background:#0a0f0a;border:1px solid #1d4026;counter-reset:row}
+  .frow{display:flex;gap:13px;align-items:baseline;padding:9px 16px;border-bottom:1px solid #142b19;cursor:pointer}
+  .frow:last-child{border-bottom:0}
+  .frow:hover{background:#33ff66}
+  .frow:hover .ft,.frow:hover .src,.frow:hover .fs{color:#000}
+  .frow:hover::before{color:#000}
+  .frow:hover .src em{color:#333}
+  .frow::before{counter-increment:row;content:counter(row,decimal-leading-zero);font-size:12px;color:#33ff66;min-width:24px}
+  .frow .src{flex:none;width:172px;max-width:36vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12.5px;font-weight:700;color:#eaffee}
+  .frow .src em{font-style:normal;font-weight:400;color:#6f9a78;margin-left:7px;font-size:11.5px}
+  .frow .ft{flex:1;font-size:14.5px;line-height:1.45;color:#c8f5d2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .frow .fs{flex:none;font-size:11.5px;color:#476b4f;white-space:nowrap}
+  .count{font-size:13px;color:#6f9a78;font-weight:400}
+</style>
+<style id="theme-switcher">
+  .tswitch{display:flex;gap:6px;align-items:center;font-size:13px}
+  .tswitch span{opacity:.65;margin-right:2px}
+  .tswitch button{padding:5px 13px;border-radius:99px;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer;font-size:13px;opacity:.6;font-family:inherit}
+  .tswitch button.on{opacity:1;font-weight:700;box-shadow:inset 0 0 0 1px currentColor}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="logo">我的<span>资讯台</span></div>
+    <span class="tag">多风格版 · 静态演示，无实际逻辑</span>
+    <div class="tenant">
+      <label for="tenantSel">当前空间（租户）</label>
+      <select id="tenantSel">
+        <option>我的个人空间</option>
+        <option>家庭共享空间</option>
+        <option>小团队空间</option>
+      </select>
+    </div>
+  </div>
+</header>
+
+<nav><div class="in">
+  <button class="on" data-go="home">1 · 今日资讯</button>
+  <button data-go="topics">2 · 我的主题</button>
+  <button data-go="detail">3 · 资讯详情</button>
+  <button data-go="me">4 · 个性化设置</button>
+  <button data-go="flow">5 · 原型导览</button>
+</div></nav>
+
+<main>
+
+<!-- 页面 1：今日资讯 -->
+<section class="page on" id="home">
+  <div class="chips" style="margin-bottom:12px">
+    <span class="chip on">全部</span><span class="chip">AI Agent</span><span class="chip">DeFi</span><span class="chip">大模型</span><span class="chip">+ 去订新主题</span>
+  </div>
+
+  <div class="feedlist" id="feed"></div>
+</section>
+
+<!-- 页面 2：我的主题 -->
+<section class="page" id="topics">
+  <div class="note"><b>原型说明：</b>个性化从这里开始。你只需要写下关心的主题，剩下的收集、筛选都交给系统。功能故意做少：订主题、选频率，就这两件。</div>
+  <h1>我的主题</h1>
+  <p class="sub">写一句话就行，不用学关键词语法。</p>
+  <div class="row" style="margin-bottom:20px">
+    <input type="text" placeholder="比如：AI Agent 的新产品动态">
+    <button class="btn">+ 添加主题</button>
+  </div>
+  <div class="list">
+    <div class="item"><div class="grow"><h3>AI Agent</h3><p>来源：事件 · Blog · 动态 &nbsp;|&nbsp; 频率：每天早上汇总一次</p></div><span class="switch">已开启 · 编辑</span></div>
+    <div class="item"><div class="grow"><h3>DeFi 头部协议升级</h3><p>来源：事件 · Blog &nbsp;|&nbsp; 频率：有大事时马上推</p></div><span class="switch">已开启 · 编辑</span></div>
+    <div class="item"><div class="grow"><h3>大模型发布</h3><p>来源：Blog · 动态 &nbsp;|&nbsp; 频率：每天早上汇总一次</p></div><span class="switch">已暂停 · 编辑</span></div>
+  </div>
+  <h2>每个主题只设 3 样</h2>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><h3>看什么来源</h3><p>事件 / Blog / 动态，勾选就行</p></div>
+    <div class="step"><div class="n">2</div><h3>多久收一次</h3><p>每天一次，或有大事马上推</p></div>
+    <div class="step"><div class="n">3</div><h3>讲多深</h3><p>小白版 / 进阶版，二选一</p></div>
+  </div>
+</section>
+
+<!-- 页面 3：资讯详情 -->
+<section class="page" id="detail">
+  <div class="note"><b>原型说明：</b>点开一条资讯，先给人话版摘要，看不懂不勉强，想深挖再去看原文。</div>
+  <div class="detail">
+    <div class="meta"><span class="kind">OpenAI · 官方 Blog</span><span>示例资讯 · 今天 08:10 收集（原型占位）</span></div>
+    <h1>某 AI Agent 框架发布新版本：能自己安排多步任务了</h1>
+    <div class="points">
+      <b>先看这 3 点就够了</b>
+      <ul>
+        <li>发生了什么：一句话讲清，不堆术语。</li>
+        <li>跟我有啥关系：结合你订的主题说明影响。</li>
+        <li>要不要行动：不用动 / 值得试 / 持续观望，给个明确建议。</li>
+      </ul>
+    </div>
+    <p style="color:#555;font-size:15px">这里是正文摘要区（原型占位）。正式版会把长文拆成小段，每段一个意思，读不完也能随时停。</p>
+    <div class="row" style="margin-top:18px">
+      <button class="btn">看原文</button>
+      <button class="btn ghost">收藏</button>
+      <button class="btn ghost">不感兴趣 · 少推这类</button>
+    </div>
+    <p class="why">你的反馈会直接影响明天的排序：点了“少推这类”，同类内容就往后排。这就是个性化越用越准的原因。</p>
+  </div>
+</section>
+
+<!-- 页面 4：个性化设置 -->
+<section class="page" id="me">
+  <div class="note"><b>原型说明：</b>多租户在这里看得最清楚：一个账号可以有多个空间，每个空间的主题和口味互不干扰。</div>
+  <h1>个性化设置</h1>
+  <p class="sub">不用填长表单，点一点就行。</p>
+  <div class="list">
+    <div class="item"><div class="grow"><h3>我的空间</h3><p>个人空间（只有我）· 家庭共享空间（3 人）· 小团队空间（原型占位）</p></div><span class="switch">切换 / 管理</span></div>
+    <div class="item"><div class="grow"><h3>界面风格</h3><p>整个网站的皮肤，在这里统一设置，选完立刻生效。</p><div class="tswitch" style="margin-top:10px"><button data-theme="editorial">编辑风</button><button data-theme="tech" class="on">科技感</button><button data-theme="geek">极客风</button></div></div></div>
+    <div class="item"><div class="grow"><h3>我是谁（身份）</h3><p>决定资讯讲多深、用不用术语；在这里统一设置，今日资讯按这个身份展示。</p><div class="persona" style="margin:10px 0 0"><button class="on" data-persona="beginner">小白用户</button><button data-persona="dev">开发者</button><button data-persona="investor">关注行业的人</button></div></div></div>
+    <div class="item"><div class="grow"><h3>什么时候推给我</h3><p>每天 08:00 汇总一次；大事例外，马上推</p></div><span class="switch">修改</span></div>
+    <div class="item"><div class="grow"><h3>不要推给我的</h3><p>营销软文、重复转载 — 默认已过滤，可随时调整</p></div><span class="switch">查看</span></div>
+  </div>
+</section>
+
+<!-- 页面 5：原型导览 -->
+<section class="page" id="flow">
+  <h1>原型导览</h1>
+  <p class="sub">给评审看的页：页面结构、核心功能、交互流程都在这里，一页看完。</p>
+
+  <h2>Step 1 · 页面结构（只有 4 个页）</h2>
+  <div class="map">
+    我的资讯台
+    <ul>
+      <li>今日资讯 — 每天看的地方：只展示资讯流，身份等设置统一在个性化设置里</li>
+      <li>我的主题 — 订主题、选来源和频率</li>
+      <li>资讯详情 — 人话摘要 3 点 + 原文入口 + 反馈按钮</li>
+      <li>个性化设置 — 空间（租户）、身份、推送时间、过滤规则</li>
+    </ul>
+  </div>
+
+  <h2>Step 2 · 核心功能（只留 4 个）</h2>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><h3>订主题</h3><p>一句话写下关心什么</p></div>
+    <div class="step"><div class="n">2</div><h3>定时收集</h3><p>事件、Blog、动态自动收</p></div>
+    <div class="step"><div class="n">3</div><h3>千人千面</h3><p>按身份和口味排序、改写深浅</p></div>
+    <div class="step"><div class="n">4</div><h3>反馈调教</h3><p>点一下，少推或多推这类</p></div>
+  </div>
+
+  <h2>Step 3 · 交互流程</h2>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><h3>订主题</h3><p>用户写一句话</p></div>
+    <div class="step"><div class="n">2</div><h3>定时收集</h3><p>系统按时去收</p></div>
+    <div class="step"><div class="n">3</div><h3>筛选整理</h3><p>去重、过滤营销、写人话摘要</p></div>
+    <div class="step"><div class="n">4</div><h3>个性化推送</h3><p>按空间 + 身份排好序推给你</p></div>
+    <div class="step"><div class="n">5</div><h3>阅读反馈</h3><p>收藏 / 少推这类</p></div>
+    <div class="step"><div class="n">6</div><h3>越用越准</h3><p>明天的排序自动调整</p></div>
+  </div>
+
+  <h2>结论</h2>
+  <div class="card">
+    <p>这个原型先验证三件事：<b>订主题够不够简单、千人千面看不看得出差别、详情页的人话摘要好不好懂。</b>三件都成立，再谈技术架构和开发计划；功能宁可少，不要一上来堆满。</p>
+  </div>
+</section>
+
+</main>
+<footer>静态产品原型 · 所有资讯均为示例占位 · 无后端、无真实数据、无实际逻辑</footer>
+
+<script>
+  // 仅原型演示：切换页面 + 切换身份时换一组示例卡片。无实际业务逻辑。
+  const navBtns = document.querySelectorAll('nav button');
+  function go(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.toggle('on', p.id===id));
+    navBtns.forEach(b=>b.classList.toggle('on', b.dataset.go===id));
+    window.scrollTo({top:0});
+  }
+  navBtns.forEach(b=>b.addEventListener('click', ()=>go(b.dataset.go)));
+
+  // 每组 15 条，紧凑一行一条：类型 + 标题 + 来源时间。摘要和“为什么推给你”移到详情页，列表不再堆内容。
+  const feeds = {
+    beginner: [
+      ['OpenAI · 官方 Blog','一个 AI 助手学会自己干活了','1 小时前'],
+      ['Aave · 官方 Blog','DeFi 大协议升级，普通人要动钱吗？先说不用','3 小时前'],
+      ['Andrej Karpathy · X','几个做 AI 的人今天都在聊同一件事','今天'],
+      ['Anthropic · 官方 Blog','新模型发布：聊天更聪明，价格还降了','今天'],
+      ['机器之心 · 公众号','一篇讲清：到底什么是 AI Agent','今天'],
+      ['宝玉 · X','有人用 AI 一天做完一周报表，可信吗','今天'],
+      ['Google · 官方 Blog','一款 App 上线 AI 搜索，查资料不用翻网页了','昨天'],
+      ['Coinbase · 官方 Blog','钱包 App 更新：新手转账多了安全提醒','昨天'],
+      ['Elon Musk · X','大佬说：明年每个公司都会有 AI 助手','昨天'],
+      ['Midjourney · 官方公告','AI 画图工具升级，普通人也能做海报了','昨天'],
+      ['Binance · 平台公告','交易所上线新理财产品，风险写得很清楚','昨天'],
+      ['何同学 · B站','一位老师用 AI 备课火了，评论区都在求教程','2 天前'],
+      ['Apple · 新闻稿','语音助手能打电话订餐了，先在几个城市试','2 天前'],
+      ['国家反诈中心 · 公众号','小白避坑：看到“AI 稳赚”先停三秒','2 天前'],
+      ['GitHub Trending · GitHub','这周最热的 AI 开源项目，普通人能用上吗','2 天前']
+    ],
+    dev: [
+      ['LangChain · 官方 Blog','Agent 框架 v2：多步任务编排与工具调用变更','1 小时前'],
+      ['Uniswap · 官方 Blog','头部协议完成合约升级，新增 Hook 示例','3 小时前'],
+      ['Andrej Karpathy · X','开发者热议：评估 Agent 到底怎么做才靠谱','今天'],
+      ['OpenAI · API 公告','新模型 API 降价，上下文窗口翻倍','今天'],
+      ['Qdrant · GitHub','开源向量数据库发布性能大版本','今天'],
+      ['字节跳动技术团队 · 公众号','RAG 实战：分块策略怎么选，有数据对比','今天'],
+      ['宝玉 · X','MCP 工具生态一周新增盘点','昨天'],
+      ['llama.cpp · GitHub','某推理框架开始支持本地小模型加速','昨天'],
+      ['Anthropic · 工程 Blog','多 Agent 协作踩坑记录：重试与死循环','昨天'],
+      ['Hacker News · 论坛','代码助手哪家强？社区实测帖汇总','昨天'],
+      ['Google · 开发者 Blog','新版 SDK 统一流式输出接口','昨天'],
+      ['PromptLayer · Blog','提示词版本管理：团队协作方案','2 天前'],
+      ['Datadog · 官方 Blog','可观测性工具开始支持 Agent 链路追踪','2 天前'],
+      ['Aave · 治理论坛','协议治理提案通过，开发者激励调整','2 天前'],
+      ['a16z · Blog','从 Demo 到上线：Agent 的成本账怎么算','2 天前']
+    ],
+    investor: [
+      ['OpenAI · 官方 Blog','头部 AI 公司发布新模型，生态伙伴名单变长','1 小时前'],
+      ['Marc Andreessen · X','投资人今天都在转发一篇行业判断','今天'],
+      ['DeFiLlama · 数据站','DeFi 头部协议月活与收入数据更新','今天'],
+      ['Anthropic · 官方公告','某 AI 公司完成新一轮融资','今天'],
+      ['微软 · 财报电话会','大厂财报里，AI 投入占比又提高了','今天'],
+      ['Alphabet · 财报电话会','云厂商 AI 收入增速对比：哪家更快','昨天'],
+      ['DeFiLlama · 数据站','头部协议 TVL 变化：资金在往哪走','昨天'],
+      ['知名创始人 · X','创始人公开信：为什么砍掉一条产品线','昨天'],
+      ['红杉资本 · 公众号','模型降价潮背后：成本曲线怎么走','昨天'],
+      ['a16z · 官方公告','新基金成立，专门投 AI 应用层','昨天'],
+      ['SEC · 官网','监管动态：一份新指引值得留意','2 天前'],
+      ['Sensor Tower · 数据 Blog','AI 应用收入榜：谁真的在赚钱','2 天前'],
+      ['Salesforce · 官方公告','某上市公司宣布全员配 AI 助手','2 天前'],
+      ['a16z · 播客','行业会议纪要：分发与信任成关键词','2 天前'],
+      ['Coinbase · 行业 Blog','交易所上新节奏加快，合规成卖点','2 天前']
+    ]
+  };
+  const feedEl = document.getElementById('feed');
+  function renderFeed(key){
+    feedEl.innerHTML = feeds[key].map(x=>{
+      const parts = x[0].split(' · ');
+      const name = parts[0], platform = parts.slice(1).join(' · ');
+      return `<div class="frow" onclick="go('detail')">
+        <span class="src">${name}<em>${platform}</em></span>
+        <span class="ft">${x[1]}</span>
+        <span class="fs">${x[2]}</span>
+      </div>`;
+    }).join('');
+  }
+  renderFeed('beginner');
+  document.querySelectorAll('.persona button').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('.persona button').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on'); renderFeed(b.dataset.persona);
+    });
+  });
+  document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click', ()=>{
+    document.querySelectorAll('.chip').forEach(x=>x.classList.remove('on')); c.classList.add('on');
+  }));
+</script>
+
+<script>
+  // 风格切换：三套样式只启用一套（media=all），其余 media="not all"。仅原型演示。
+  document.querySelectorAll('.tswitch button').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('.tswitch button').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');
+      ['editorial','tech','geek'].forEach(name=>{
+        document.getElementById('theme-'+name).media = (name===b.dataset.theme) ? 'all' : 'not all';
+      });
+    });
+  });
+</script>
+</body>
+</html>
